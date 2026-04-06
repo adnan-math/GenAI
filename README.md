@@ -12,8 +12,7 @@ Built using:
 
 ## 🚀 Live Demo
 
-👉 *(Add your Streamlit link here after deployment)*  
-`https://your-app-name.streamlit.app`
+👉 https://madnan-rag.streamlit.app
 
 ---
 
