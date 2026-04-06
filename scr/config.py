@@ -1,7 +1,6 @@
-from pathlib import Path
-
 CONFIG = {
-    "pdf_path": Path("data/adnan_cv.pdf"),  # relative path inside repo
+    "pdf_path": "d:/GenAI/rag-project/data/adnan_cv.pdf",
+    #"pdf_path": "d:/GenAI/rag-project/data/sample.pdf",
     "chunk_size": 150,
     "overlap": 50
 }
