@@ -1,6 +1,7 @@
 import streamlit as st
 from pathlib import Path
 import os
+import uuid
 
 from scr.chunking import chunk_text_with_metadata
 from scr.ingestion import load_multiple_pdfs
@@ -120,12 +121,17 @@ else:
         st.stop()
 
     # Save uploaded file temporarily
-    temp_path = Path("temp_uploaded.pdf")
+    temp_path = Path(f"temp_{uuid.uuid4().hex}.pdf")
     with open(temp_path, "wb") as f:
         f.write(uploaded_file.read())
 
     selected_pdf = temp_path
     st.sidebar.success(f"Uploaded: {uploaded_file.name}")
+
+if mode == "Use Sample PDFs":
+    display_name = selected_topic
+else:
+    display_name = uploaded_file.name
 
 # -----------------------------
 # LOAD PIPELINE (CACHED)
@@ -150,7 +156,7 @@ def load_pipeline_single(pdf_path_str: str):
     return retriever
 
 # Build retriever
-with st.spinner(f"⚙️ Processing '{selected_topic}'..."):
+with st.spinner(f"⚙️ Processing '{display_name}'..."):
     retriever = load_pipeline_single(str(selected_pdf))
 
 st.success("✅ PDF processed! You can now ask questions.")
