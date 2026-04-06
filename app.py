@@ -84,30 +84,57 @@ else:
 # -----------------------------
 DATA_PATH = Path(CONFIG["pdf_path"]).parent
 
+mode = st.sidebar.radio(
+    "📂 Choose Document Source",
+    ["Use Sample PDFs", "Upload Your Own PDF"]
+)
+uploaded_file = None
+
+if mode == "Upload Your Own PDF":
+    uploaded_file = st.sidebar.file_uploader("Upload a PDF", type="pdf")
+
 # -----------------------------
 # SIDEBAR TOPIC SELECTION
 # -----------------------------
-pdf_files = list(DATA_PATH.glob("*.pdf"))
-topics = [f.stem for f in pdf_files]
+selected_pdf = None
 
-selected_topic = st.sidebar.selectbox(
-    "📄 Select a topic",
-    ["-- Select a topic --"] + topics
-)
+if mode == "Use Sample PDFs":
+    pdf_files = list(DATA_PATH.glob("*.pdf"))
+    topics = [f.stem for f in pdf_files]
 
-if selected_topic == "-- Select a topic --":
-    st.info("📄 Please select a topic from the sidebar to continue.")
-    st.stop()
+    selected_topic = st.sidebar.selectbox(
+        "📄 Select a topic",
+        ["-- Select a topic --"] + topics
+    )
 
-selected_pdf = next(f for f in pdf_files if f.stem == selected_topic)
-st.sidebar.success(f"Selected PDF: {selected_pdf.name}")
+    if selected_topic == "-- Select a topic --":
+        st.info("📄 Please select a topic from the sidebar to continue.")
+        st.stop()
+
+    selected_pdf = next(f for f in pdf_files if f.stem == selected_topic)
+    st.sidebar.success(f"Selected PDF: {selected_pdf.name}")
+
+else:
+    if uploaded_file is None:
+        st.info("📤 Please upload a PDF to continue.")
+        st.stop()
+
+    # Save uploaded file temporarily
+    temp_path = Path("temp_uploaded.pdf")
+    with open(temp_path, "wb") as f:
+        f.write(uploaded_file.read())
+
+    selected_pdf = temp_path
+    st.sidebar.success(f"Uploaded: {uploaded_file.name}")
 
 # -----------------------------
 # LOAD PIPELINE (CACHED)
 # -----------------------------
 @st.cache_resource
-def load_pipeline_single(pdf_path: Path):
-    documents = load_multiple_pdfs(pdf_path.parent)
+def load_pipeline_single(pdf_path_str: str):
+    pdf_path = Path(pdf_path_str)
+
+    documents = load_multiple_pdfs([pdf_path])
     text = documents.get(pdf_path.name, None)
 
     if text is None:
@@ -124,7 +151,7 @@ def load_pipeline_single(pdf_path: Path):
 
 # Build retriever
 with st.spinner(f"⚙️ Processing '{selected_topic}'..."):
-    retriever = load_pipeline_single(selected_pdf)
+    retriever = load_pipeline_single(str(selected_pdf))
 
 st.success("✅ PDF processed! You can now ask questions.")
 
