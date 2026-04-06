@@ -1,11 +1,11 @@
 # Streamlit UI
-streamlit==1.27.0
+streamlit
 
 # PDF processing
-pypdf==3.15.0
+pypdf
 
 # Numeric computing
-#numpy==1.25.3
+numpy
 
 # Google Gemini API
 google-generativeai==0.8.6
