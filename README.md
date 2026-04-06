@@ -52,39 +52,8 @@ Built using:
 
 ## 🧱 Project Architecture
 
-+-----------------------------------------------------------+
-|                       Streamlit UI                        |
-|  - Sidebar: Select PDF                                    |
-|  - Text Input: Ask Questions                              |
-|  - Chat History Display                                   |
-+-----------------------------------------------------------+
-                     |
-                     v
-+-----------------------------------------------------------+
-|                   RAG Pipeline Layer                      |
-|  - PDF Loader (ingestion.py)                              |
-|      * Reads multiple PDFs                                 |
-|  - Text Chunking (chunking.py)                            |
-|      * Word-based / Paragraph / Char-based chunks        |
-|      * Metadata enriched for RAG                          |
-|  - Embedding + Vector Store (retriever.py)               |
-|      * EmbeddingModel                                     |
-|      * VectorRetriever (FAISS)                            |
-+-----------------------------------------------------------+
-                     |
-                     v
-+-----------------------------------------------------------+
-|                    Gemini API Layer                        |
-|  - Google Gemini 2.5-flash                                 |
-|  - Uses prompt with:                                       |
-|      * Conversation History                                |
-|      * Retrieved Text Chunks                               |
-|  - Generates AI Response                                   |
-+-----------------------------------------------------------+
-                     |
-                     v
-+-----------------------------------------------------------+
-|                  Response Rendering                        |
-|  - Display answer in Streamlit UI                         |
-|  - Update chat history                                     |
-+-----------------------------------------------------------+
+User selects PDF → Streamlit reads the PDF from data/.
+Text Chunking → Converts PDF text into small chunks with metadata.
+Embedding & Vector Store → Each chunk is embedded and added to FAISS for fast retrieval.
+User query → Retrieved relevant chunks + conversation history → sent to Gemini API.
+Response → Gemini generates an answer → Streamlit displays it in chat format.
