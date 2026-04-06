@@ -14,6 +14,9 @@ import google.generativeai as genai
 # -----------------------------
 st.set_page_config(page_title="RAG Chatbot (Gemini)", layout="wide")
 
+st.write("App Root:", Path().resolve())
+st.write("Data folder exists:", (Path("data")).exists())
+st.write("PDFs found:", list(Path("data").glob("*.pdf")))
 # -----------------------------
 # LOAD GEMINI MODEL (CACHED)
 # -----------------------------
