@@ -139,9 +139,7 @@ else:
 @st.cache_resource
 def load_pipeline_single(pdf_path_str: str):
     pdf_path = Path(pdf_path_str)
-
-    documents = load_multiple_pdfs([pdf_path])
-    text = documents.get(pdf_path.name, None)
+    text = process_pdf(pdf_path)
 
     if text is None:
         raise FileNotFoundError(f"{pdf_path} not found")
