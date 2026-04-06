@@ -4,16 +4,16 @@ streamlit==1.27.0
 # PDF processing
 pypdf==3.15.0
 
-# PyTorch CPU and related
+# PyTorch CPU version (required by sentence-transformers)
 torch==2.2.0+cpu
 torchaudio==2.2.0+cpu
 torchvision==0.17.0+cpu
 -f https://download.pytorch.org/whl/cpu/torch_stable.html
 
-# Vector embeddings & ML
-numpy==1.26.4
-faiss-cpu==1.7.4
+# Vector embeddings & sentence-transformers
 sentence-transformers==2.2.2
+faiss-cpu==1.7.4
+numpy==1.26.4
 
 # Google Gemini API
 google-generativeai==0.1.3
