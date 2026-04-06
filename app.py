@@ -4,7 +4,7 @@ import os
 import uuid
 
 from scr.chunking import chunk_text_with_metadata
-from scr.ingestion import load_multiple_pdfs
+from scr.ingestion import load_multiple_pdfs, process_pdf
 from scr.retriever import EmbeddingModel, VectorRetriever
 from scr.config import CONFIG
 
